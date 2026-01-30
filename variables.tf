@@ -23,5 +23,19 @@ variable "igw_tags" {
 }
 variable "public_subnet_cidrs" {
     type = list
+}
 
+variable "public_subnet_tags" {
+    type = map
+    default = {}
+}
+
+variable "private_subnet_cidrs" {
+    type = list
+  
+}
+variable "private_subnet_tags" {
+    type = map
+    default = {}
+  
 }
