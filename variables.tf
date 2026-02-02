@@ -48,3 +48,23 @@ variable "database_subnet_tags" {
     default = {}
   
 }
+variable "public_route_table_tags" {
+    type = map
+    default = {}
+  
+}
+variable "private_route_table_tags" {
+    type = map
+    default = {}
+  
+}
+variable "database_route_table_tags" {
+    type = map
+    default = {}
+  
+}
+variable "eip_tags" {
+    type = map
+    default = {}
+  
+}

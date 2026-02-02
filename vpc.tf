@@ -75,3 +75,60 @@ resource "aws_subnet" "database" {
   )
   
 }
+# Public Route Table
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    var.public_route_table_tags,
+    local.common_tags,
+    {
+        Name = "${local.common_name_suffix}-public"
+    }
+  )
+}
+# Private Route Table
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    var.private_route_table_tags,
+    local.common_tags,
+    {
+        Name = "${local.common_name_suffix}-private"
+    }
+  )
+}
+
+# database Route Table
+resource "aws_route_table" "database" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    var.database_route_table_tags,
+    local.common_tags,
+    {
+        Name = "${local.common_name_suffix}-database"
+    }
+  )
+}
+
+# Public Route
+resource "aws_route" "public" {
+  route_table_id            = aws_route_table.public.id
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.main.id
+}
+
+# Elastic IP
+resource "aws_eip" "nat" {
+  domain   = "vpc"
+
+  tags = merge(
+    var.eip_tags,
+    local.common_tags,
+    {
+        Name = "${local.common_name_suffix}-nat"
+    }
+  )
+}
