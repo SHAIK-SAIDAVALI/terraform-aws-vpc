@@ -68,3 +68,8 @@ variable "eip_tags" {
     default = {}
   
 }
+variable "nat_gateway_tags" {
+    type = map
+    default = {}
+  
+}

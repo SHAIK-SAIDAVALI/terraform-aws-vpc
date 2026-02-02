@@ -132,3 +132,36 @@ resource "aws_eip" "nat" {
     }
   )
 }
+
+#Nat gateway
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id = aws_subnet.public[0].id
+
+  tags = merge(
+    var.nat_gateway_tags,
+    local.common_tags,
+    {
+      Name = "${local.common_name_suffix}"
+    }
+  )
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the internet gateway for the vpc.connection {
+    depends_on = [ aws_internet_gateway.main ]
+  }
+  
+  resource "aws_route" "private" {
+    route_table_id = aws_route_table.private.id
+    destination_cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+  
+  }
+   resource "aws_route" "database" {
+    route_table_id = aws_route_table.database.id
+    destination_cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+  
+  }
+
