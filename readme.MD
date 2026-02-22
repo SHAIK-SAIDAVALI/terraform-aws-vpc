@@ -15,3 +15,7 @@ This Module creates following resources
 * VPC - Default VPC Peering
 * public Route table to default vpc route 
 
+### Inputs
+
+* vpc_cidr - (Required). User must supply the CIDR for VPC.
+* project_name - (Required). User must supply the project nae.
